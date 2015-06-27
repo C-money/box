@@ -2,8 +2,8 @@
 // LED controller and slave to motion sense hub for box lighting effects
 
 // Cole Hatton
-// 15-0625
-//  v0.2.0
+// 15-0627
+//  v0.3.0
 
 
 #include <OctoWS2811.h>
@@ -11,15 +11,32 @@
 
 
 //OctoWS2811 Defn. Stuff
-#define LONGEST_STRIP 40// all of the following params need to be adjusted for screen size
-#define N_LED_OUTPUTS 8  // LED_LAYOUT assumed 0 if ROWS_LEDs > 8
+#define LONGEST_STRIP 138// all of the following params need to be adjusted for screen size
+#define N_LED_OUTPUTS 3  // LED_LAYOUT assumed 0 if ROWS_LEDs > 8
 #define N_LEDS    (LONGEST_STRIP * N_LED_OUTPUTS)
 
-DMAMEM int displayMemory[N_LEDS];
-int drawingMemory[N_LEDS];
+DMAMEM int displayMemory[LONGEST_STRIP * 6];
+int drawingMemory[LONGEST_STRIP * 6];
 const int config = WS2811_GRB | WS2811_800kHz;
 OctoWS2811 leds(LONGEST_STRIP, displayMemory, drawingMemory, config);
 
+#define N_STRIPS 13
+
+//real vals, index off by 1 - int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 29, 28, 24, 30, 28};
+int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 48, 29, 24, 30, 55};
+
+#define STRIP_RED_LEVEL_MAX  1024
+#define STRIP_RED_LEVEL_DEC  2
+int strip_red_levels[N_STRIPS];// = {0, 0, 0, 0, 0, 0};
+int strip_red_setpoints[N_STRIPS];// = {0, 0, 0, 0, 0, 0};
+
+#define N_MOT_SENSORS 13
+
+unsigned long frameCount=500;  // arbitrary seed to calculate the three time displacement variables t,t2,t3
+uint16_t led_index = 0;
+uint8_t strip_index = 0;
+
+int incomingByte;
 //Byte val 2PI Cosine Wave, offset by 1 PI 
 //supports fast trig calcs and smooth LED fading/pulsing.
 
@@ -82,31 +99,16 @@ void setup()
   leds.show();
 }
 
-#define N_STRIPS 6
-
-int strip_lengths[N_STRIPS] = {5, 5, 5, 5, 5, 400};
-
-#define STRIP_RED_LEVEL_MAX  1024
-#define STRIP_RED_LEVEL_DEC  2
-int strip_red_levels[N_STRIPS] = {0, 0, 0, 0, 0, 0};
-int strip_red_setpoints[N_STRIPS] = {0, 0, 0, 0, 0, 0};
-
-#define N_MOT_SENSORS 5
-
-unsigned long frameCount=500;  // arbitrary seed to calculate the three time displacement variables t,t2,t3
-uint16_t led_index = 0;
-uint8_t strip_index = 0;
-
-int incomingByte;
 
 void loop()
 {
+  //Serial.print("loop\n");
   frameCount++;
   uint16_t t = fastCosineCalc((43 * frameCount)/50);  //time displacement - fiddle with these til it looks good...
   uint16_t t2 = -fastCosineCalc((35 * frameCount)/50); 
   uint16_t t3 = fastCosineCalc((37 * frameCount)/50);
   
-  if (Serial.available() > 0) {
+  /*if (Serial.available() > 0) {
     incomingByte = Serial.read();
     /*switch (incomingByte) {
       case '0':
@@ -121,10 +123,10 @@ void loop()
       strip_red_setpoints[5] = STRIP_RED_LEVEL_MAX;
       break;
     }*/
-    if (incomingByte >= '0' && incomingByte < '0' + N_STRIPS) {
+   /* if (incomingByte >= '0' && incomingByte < '0' + N_STRIPS) {
       strip_red_setpoints[incomingByte - '0'] = STRIP_RED_LEVEL_MAX;
     }
-  }
+  }*/
   
   if (i2c_update) {
     i2c_update = false;

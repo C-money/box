@@ -1,6 +1,8 @@
 // -------------------------------------------------------------------------------------------
 // Teensy3.0/3.1/LC I2C Master
 // 08Mar13 Brian (nox771 at gmail.com)
+
+// CH v0.1.0
 // -------------------------------------------------------------------------------------------
 //
 // This creates an I2C master device which talks to the simple I2C slave device given in the
@@ -65,10 +67,10 @@ void print_i2c_setup(void);
 void print_i2c_status(void);
 
 
-#define N_MOT_SENSORS 5
+#define N_MOT_SENSORS 13
 uint8_t mot_sensor_update;
 uint8_t mot_sensor_events[N_MOT_SENSORS];
-uint8_t mot_sensor_pins[N_MOT_SENSORS] = {0, 3, 4, 5, 6};
+uint8_t mot_sensor_pins[N_MOT_SENSORS] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
 
 // Memory
