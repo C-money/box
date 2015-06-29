@@ -3,7 +3,7 @@
 
 // Cole Hatton
 // 15-0627
-//  v0.3.1
+//  v0.3.2
 
 
 #include <OctoWS2811.h>
@@ -25,7 +25,7 @@ OctoWS2811 leds(LONGEST_STRIP, displayMemory, drawingMemory, config);
 //real vals, index off by 1 - int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 29, 28, 24, 30, 28};
 //int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 48, 29, 24, 30, 55};
 // new remapped values after for first box test
-int strip_lengths[N_STRIPS] = {21, 27, 27, 35, 38, 29, 43, 28, 24, 30, 28};
+int strip_lengths[N_STRIPS] = {21, 27, 27, 35, 38, 29, 43, 30, 28, 28, 24};
 
 
 #define STRIP_RED_LEVEL_MAX  1024
