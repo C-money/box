@@ -3,7 +3,7 @@
 
 // Cole Hatton
 // 15-0627
-//  v0.3.0
+//  v0.3.1
 
 
 #include <OctoWS2811.h>
@@ -11,7 +11,7 @@
 
 
 //OctoWS2811 Defn. Stuff
-#define LONGEST_STRIP 138// all of the following params need to be adjusted for screen size
+#define LONGEST_STRIP 110// all of the following params need to be adjusted for screen size
 #define N_LED_OUTPUTS 3  // LED_LAYOUT assumed 0 if ROWS_LEDs > 8
 #define N_LEDS    (LONGEST_STRIP * N_LED_OUTPUTS)
 
@@ -20,10 +20,13 @@ int drawingMemory[LONGEST_STRIP * 6];
 const int config = WS2811_GRB | WS2811_800kHz;
 OctoWS2811 leds(LONGEST_STRIP, displayMemory, drawingMemory, config);
 
-#define N_STRIPS 13
+#define N_STRIPS 11
 
 //real vals, index off by 1 - int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 29, 28, 24, 30, 28};
-int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 48, 29, 24, 30, 55};
+//int strip_lengths[N_STRIPS] = {21, 27, 27, 34, 29, 38, 29, 23, 48, 29, 24, 30, 55};
+// new remapped values after for first box test
+int strip_lengths[N_STRIPS] = {21, 27, 27, 35, 38, 29, 43, 28, 24, 30, 28};
+
 
 #define STRIP_RED_LEVEL_MAX  1024
 #define STRIP_RED_LEVEL_DEC  2
