@@ -82,6 +82,10 @@ void setup()
     memset(mem, 0, sizeof(mem));
     rate = I2C_RATE_400;
 
+    for (uint16_t i = 0; i < MEM_LEN; i++) {
+      mem[i] = i+4;
+    }
+
     // register events
     Wire.onReceive(receiveEvent);
     Wire.onRequest(requestEvent);
